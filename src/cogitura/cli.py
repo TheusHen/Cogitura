@@ -9,9 +9,9 @@ from rich.table import Table
 
 from cogitura.config import Config
 from cogitura.core.database_manager import DatabaseManager
-from cogitura.core.evaluator import ModelEvaluator
+from cogitura.core.evaluator import Evaluator
 from cogitura.core.sentence_generator import SentenceGenerator
-from cogitura.core.trainer import ModelTrainer
+from cogitura.core.trainer import Trainer
 from cogitura.core.tts_processor import TTSProcessor
 from cogitura.utils import split_sentence_into_words
 
@@ -44,14 +44,11 @@ def generate(count, batch_size, save_db, generate_tts):
 
     # Gera sentenças
     generator = SentenceGenerator()
-    sentences = generator.generate_multiple(count, batch_size, show_progress=True)
+    sentences = generator.generate_batch(count)
 
-    # Estatísticas
-    stats = generator.get_statistics()
-    console.print("\n[bold]Estatísticas:[/bold]")
-    console.print(f"  Sentenças geradas: {stats['total_sentences']}")
-    console.print(f"  Palavras únicas: {stats['unique_words']}")
-    console.print(f"  Média de palavras por sentença: {stats['avg_words_per_sentence']:.2f}")
+    # Estatísticas simples
+    console.print(f"\n[bold]Estatísticas:[/bold]")
+    console.print(f"  Sentenças geradas: {len(sentences)}")
 
     # Salva no DB
     if save_db:
@@ -59,14 +56,16 @@ def generate(count, batch_size, save_db, generate_tts):
         db = DatabaseManager()
 
         sentences_data = []
+        all_words = set()
         for sentence in sentences:
             words = split_sentence_into_words(sentence)
             sentences_data.append({"sentence": sentence, "words": words})
+            all_words.update(words)
 
         db.bulk_add_sentences(sentences_data)
 
         # Adiciona palavras únicas
-        words_data = [{"word": word} for word in stats["words_list"]]
+        words_data = [{"word": word} for word in all_words]
         db.bulk_add_words(words_data)
 
         console.print("[bold green]Dados salvos com sucesso![/bold green]")
@@ -76,18 +75,21 @@ def generate(count, batch_size, save_db, generate_tts):
         console.print("\n[bold]Gerando TTS...[/bold]")
         tts = TTSProcessor()
 
+        # Extrai palavras únicas das sentenças
+        all_words = set()
+        for sentence in sentences:
+            words = split_sentence_into_words(sentence)
+            all_words.update(words)
+
         # TTS para palavras
-        tts.batch_process_words(list(generator.unique_words), show_progress=True)
+        console.print(f"Gerando áudio para {len(all_words)} palavras únicas...")
+        tts.batch_process_words(list(all_words), show_progress=False)
 
         # TTS para sentenças
-        tts.batch_process_sentences(sentences, show_progress=True)
+        console.print(f"Gerando áudio para {len(sentences)} sentenças...")
+        tts.batch_process_sentences(sentences, show_progress=False)
 
-        tts_stats = tts.get_statistics()
-        console.print(
-            "[bold green]TTS gerado: "
-            f"{tts_stats['total_files']} arquivos, "
-            f"{tts_stats['total_size_mb']:.2f} MB[/bold green]"
-        )
+        console.print("[bold green]TTS gerado com sucesso![/bold green]")
 
 
 @main.command()
@@ -103,7 +105,11 @@ def train(model, epochs, batch_size):
     # Busca dados do DB
     console.print("Carregando dados do ElasticSearch...")
     db = DatabaseManager()
-    sentences_data = db.get_all_sentences()
+    
+    # Busca sentenças com seus metadados completos
+    query = {"query": {"match_all": {}}, "size": 10000}
+    result = db.es.search(index=db.sentences_index, body=query)
+    sentences_data = [hit["_source"] for hit in result.get("hits", {}).get("hits", [])]
 
     if not sentences_data:
         console.print("[bold red]Nenhum dado encontrado no banco de dados![/bold red]")
@@ -115,17 +121,30 @@ def train(model, epochs, batch_size):
     texts = []
 
     for item in sentences_data:
-        if item.get("audio_path"):
-            audio_paths.append(Path(item["audio_path"]))
-            texts.append(item["sentence"])
+        # Gera o path do áudio baseado no hash da sentença
+        sentence_text = item.get("sentence") or item.get("text")
+        if sentence_text:
+            # Usa o hash da sentença (primeiros 16 caracteres)
+            sentence_hash = item.get("sentence_hash", "")[:16]
+            
+            audio_file = Path(Config.AUDIO_DIR) / f"sentence_{sentence_hash}mp3.mp3"
+            if audio_file.exists():
+                audio_paths.append(audio_file)
+                texts.append(sentence_text.strip())
 
     console.print(f"Encontradas {len(audio_paths)} amostras com áudio")
 
     if len(audio_paths) < 10:
         console.print("[bold yellow]Aviso: Poucos dados para treinamento![/bold yellow]")
+        
+    if len(audio_paths) == 0:
+        console.print("[bold red]Nenhum áudio encontrado![/bold red]")
+        console.print(f"Verifique o diretório: {Config.AUDIO_DIR}")
+        return
 
     # Treina
-    trainer = ModelTrainer(model_name=model)
+    config = {"model_name": model, "epochs": epochs, "batch_size": batch_size}
+    trainer = Trainer(config=config)
     train_loader, val_loader = trainer.prepare_data(audio_paths, texts)
 
     trainer.train(train_loader, val_loader, epochs=epochs)
@@ -161,7 +180,7 @@ def evaluate(model_path, sample_size):
     console.print(f"Avaliando em {len(audio_paths)} amostras")
 
     # Avalia
-    evaluator = ModelEvaluator(Path(model_path))
+    evaluator = Evaluator(Path(model_path))
     metrics = evaluator.evaluate_dataset(audio_paths, texts)
 
     # Gera e exibe relatório

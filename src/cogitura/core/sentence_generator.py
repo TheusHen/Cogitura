@@ -5,6 +5,7 @@ Gera sentenças usando IA e extrai palavras
 import re
 from typing import Any, Dict, List, Optional
 
+from cogitura.config import Config
 from cogitura.logger import log
 from cogitura.providers.ai_providers import get_provider
 
@@ -18,7 +19,7 @@ class SentenceGenerator:
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         self.config = config or {}
-        self.provider_name = self.config.get("ai_provider", "openai")
+        self.provider_name = self.config.get("ai_provider") or Config.AI_PROVIDER
         self.provider_config = self.config.get("provider_config", {})
         self.max_retries = self.config.get("max_retries", 3)
         # Carrega provider imediatamente para testes que esperam chamada única

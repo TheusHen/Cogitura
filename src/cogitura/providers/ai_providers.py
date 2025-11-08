@@ -260,7 +260,7 @@ class OllamaProvider(AIProvider):
 
     def generate_sentence(self, prompt: Optional[str] = None) -> str:
         if prompt is None:
-            prompt = "Generate a random English sentence with common words:"
+            prompt = "Gere uma frase aleatória em português brasileiro com palavras comuns do dia a dia. Responda apenas com a frase, sem explicações:"
 
         try:
             response = requests.post(
@@ -277,7 +277,7 @@ class OllamaProvider(AIProvider):
 
     def generate_sentences(self, count: int, prompt: Optional[str] = None) -> List[str]:
         if prompt is None:
-            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"  # noqa: E501
+            prompt = f"Gere {count} frases diferentes em português brasileiro com palavras comuns do vocabulário diário. Use temas variados: família, trabalho, escola, comida, viagem, tecnologia, natureza, esportes. Responda apenas com as frases, uma por linha, sem numeração ou explicações:"  # noqa: E501
 
         try:
             response = requests.post(

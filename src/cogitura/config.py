@@ -6,8 +6,9 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-# Carrega variáveis de ambiente
-load_dotenv()
+# Carrega variáveis de ambiente do .env no diretório raiz do projeto
+env_path = Path(__file__).resolve().parent.parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 
 class Config:
