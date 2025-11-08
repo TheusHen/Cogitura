@@ -64,11 +64,8 @@ PYTHONPATH=. pytest -n auto
 
 ### Status dos Testes (2025)
 - ✅ **78/78 testes passando**
-- ✅ **57% cobertura de código**
 - ✅ CI/CD automatizado
 - ✅ Testes de integração com mocks
-
-Veja [TEST_RESULTS.md](TEST_RESULTS.md) para detalhes completos.
 
 ## CI/CD
 
@@ -452,10 +449,6 @@ Se você usar este projeto em sua pesquisa, por favor cite:
 
 ### 🔮 Planejado
 - [ ] Exportação automática para Hugging Face
-- [ ] Suporte a modelos Whisper
-- [ ] API REST completa
-- [ ] Kubernetes deployment configs
-- [ ] Mobile app (React Native)
 
 ## Contato e Suporte
 
