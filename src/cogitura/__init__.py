@@ -9,11 +9,11 @@ de reconhecimento de voz.
 __version__ = "0.1.0"
 __author__ = "TheusHen"
 
-from cogitura.core.sentence_generator import SentenceGenerator
-from cogitura.core.tts_processor import TTSProcessor
 from cogitura.core.database_manager import DatabaseManager
-from cogitura.core.trainer import Trainer
 from cogitura.core.evaluator import Evaluator
+from cogitura.core.sentence_generator import SentenceGenerator
+from cogitura.core.trainer import Trainer
+from cogitura.core.tts_processor import TTSProcessor
 
 __all__ = [
     "SentenceGenerator",

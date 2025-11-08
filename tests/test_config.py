@@ -2,6 +2,7 @@
 Testes para o módulo de configuração
 """
 import pytest
+
 from cogitura.config import Config
 
 
@@ -31,4 +32,4 @@ def test_config_validation():
 
 def test_config_providers():
     """Testa se o provedor de IA está configurado"""
-    assert Config.AI_PROVIDER in ['openai', 'anthropic', 'google', 'ollama', 'custom', 'local']
+    assert Config.AI_PROVIDER in ["openai", "anthropic", "google", "ollama", "custom", "local"]

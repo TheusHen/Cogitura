@@ -3,7 +3,9 @@ Sistema de logging configurável para o projeto Cogitura
 """
 import sys
 from pathlib import Path
+
 from loguru import logger
+
 from cogitura.config import Config
 
 
@@ -11,7 +13,7 @@ def setup_logger():
     """Configura o logger do projeto"""
     # Remove configuração padrão
     logger.remove()
-    
+
     # Adiciona handler para console
     logger.add(
         sys.stderr,
@@ -19,7 +21,7 @@ def setup_logger():
         level=Config.LOG_LEVEL,
         colorize=True,
     )
-    
+
     # Adiciona handler para arquivo
     Config.LOGS_DIR.mkdir(parents=True, exist_ok=True)
     logger.add(
@@ -30,7 +32,7 @@ def setup_logger():
         retention="1 week",
         compression="zip",
     )
-    
+
     return logger
 
 

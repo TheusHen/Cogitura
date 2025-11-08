@@ -2,8 +2,9 @@
 Gerador de Sentenças - Fase 1 do projeto
 Gera sentenças usando IA e extrai palavras
 """
-from typing import List, Optional, Dict, Any
 import re
+from typing import Any, Dict, List, Optional
+
 from cogitura.logger import log
 from cogitura.providers.ai_providers import get_provider
 
@@ -23,14 +24,14 @@ class SentenceGenerator:
         # Carrega provider imediatamente para testes que esperam chamada única
         self.provider = get_provider(self.provider_name, self.provider_config)
         log.info(f"SentenceGenerator inicializado com provider: {self.provider_name}")
-    
+
     def generate_sentence(self, prompt: Optional[str] = None) -> str:
         """
         Gera uma sentença única
-        
+
         Args:
             prompt: Prompt opcional
-            
+
         Returns:
             Sentença gerada
         """
@@ -44,17 +45,17 @@ class SentenceGenerator:
                 log.warning(f"Tentativa {attempt + 1} falhou: {e}")
                 if attempt == self.max_retries - 1:
                     raise
-        
+
         raise RuntimeError("Failed to generate sentence after max retries")
-    
+
     def generate_sentences(self, count: int, prompt: Optional[str] = None) -> List[str]:
         """
         Gera múltiplas sentenças
-        
+
         Args:
             count: Número de sentenças
             prompt: Prompt opcional
-            
+
         Returns:
             Lista de sentenças
         """
@@ -64,23 +65,23 @@ class SentenceGenerator:
             sentences.append(self.generate_sentence(prompt))
         log.info(f"{len(sentences)} sentenças geradas (batch)")
         return sentences
-    
+
     def extract_words(self, sentence: str) -> List[str]:
         """
         Extrai palavras de uma sentença
-        
+
         Args:
             sentence: Sentença para extrair palavras
-            
+
         Returns:
             Lista de palavras únicas
         """
         # Remove pontuação e caracteres especiais
-        cleaned = re.sub(r'[^\w\s]', '', sentence)
-        
+        cleaned = re.sub(r"[^\w\s]", "", sentence)
+
         # Divide em palavras e converte para minúsculas
         words = cleaned.lower().split()
-        
+
         # Remove duplicatas mantendo a ordem
         unique_words = []
         seen = set()
@@ -88,11 +89,11 @@ class SentenceGenerator:
             if word not in seen:
                 seen.add(word)
                 unique_words.append(word)
-        
+
         log.debug(f"{len(unique_words)} palavras únicas extraídas de: {sentence}")
-        
+
         return unique_words
-    
+
     # Métodos compatíveis com testes -------------------------------------
     def generate(self, prompt: Optional[str] = None) -> str:
         return self.generate_sentence(prompt)

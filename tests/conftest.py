@@ -1,9 +1,10 @@
 """
 Configuração para testes pytest
 """
-import pytest
 import os
 from pathlib import Path
+
+import pytest
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -14,9 +15,9 @@ def setup_test_environment():
     os.environ["OPENAI_API_KEY"] = "test_key"
     os.environ["ELASTICSEARCH_HOST"] = "localhost"
     os.environ["ELASTICSEARCH_PORT"] = "9200"
-    
+
     yield
-    
+
     # Cleanup após testes
     pass
 
@@ -45,17 +46,11 @@ def sample_sentences():
         "this is a test",
         "python programming",
         "artificial intelligence",
-        "machine learning"
+        "machine learning",
     ]
 
 
 @pytest.fixture
 def sample_words():
     """Retorna lista de palavras de exemplo"""
-    return [
-        "hello",
-        "world",
-        "test",
-        "python",
-        "programming"
-    ]
+    return ["hello", "world", "test", "python", "programming"]

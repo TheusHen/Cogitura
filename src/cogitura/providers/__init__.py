@@ -4,12 +4,12 @@ Providers package - Provedores de IA para geração de conteúdo
 
 from cogitura.providers.ai_providers import (
     AIProvider,
-    OpenAIProvider,
     AnthropicProvider,
+    CustomProvider,
     GoogleProvider,
     OllamaProvider,
-    CustomProvider,
-    get_provider
+    OpenAIProvider,
+    get_provider,
 )
 
 __all__ = [
@@ -19,5 +19,5 @@ __all__ = [
     "GoogleProvider",
     "OllamaProvider",
     "CustomProvider",
-    "get_provider"
+    "get_provider",
 ]

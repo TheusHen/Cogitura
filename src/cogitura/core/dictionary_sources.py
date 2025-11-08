@@ -15,26 +15,34 @@ Functions return lists of definition strings (may be empty). Errors are swallowe
 and logged; returning [] keeps downstream robust.
 """
 from __future__ import annotations
-from typing import List, Dict, Any, Optional
+
+import json
 import os
 import re
 import time
-import json
-import requests
 from html import unescape
 from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import requests
+
 from cogitura.logger import log
 
 USER_AGENT = "CogituraBot/1.0 (+https://github.com/TheusHen/Cogitura)"
 REQUEST_TIMEOUT = 8
 BACKOFF_SLEEP = 0.5
 
+
 class DictionarySourceError(Exception):
     pass
 
+
 # --- Helpers -----------------------------------------------------------------
 
-def _safe_get(url: str, params: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, str]] = None) -> Optional[requests.Response]:
+
+def _safe_get(
+    url: str, params: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, str]] = None
+) -> Optional[requests.Response]:
     if headers is None:
         headers = {"User-Agent": USER_AGENT, "Accept": "application/json, text/html"}
     try:
@@ -48,7 +56,9 @@ def _safe_get(url: str, params: Optional[Dict[str, Any]] = None, headers: Option
         log.warning(f"Dictionary request failed for {url}: {e}")
         return None
 
+
 # --- Wiktionary --------------------------------------------------------------
+
 
 def fetch_wiktionary(word: str, language: str = "English") -> List[str]:
     """Fetch definitions from Wiktionary via simple HTML scraping.
@@ -70,14 +80,16 @@ def fetch_wiktionary(word: str, language: str = "English") -> List[str]:
         # Filter out navigation / example sentences heuristically
         if len(clean.split()) < 2:
             continue
-        if 'Wiktionary' in clean or 'HTML' in clean:
+        if "Wiktionary" in clean or "HTML" in clean:
             continue
         definitions.append(clean)
         if len(definitions) >= 5:  # limit noise
             break
     return definitions
 
+
 # --- Datamuse ----------------------------------------------------------------
+
 
 def fetch_datamuse(word: str) -> List[str]:
     url = "https://api.datamuse.com/words"
@@ -92,14 +104,16 @@ def fetch_datamuse(word: str) -> List[str]:
     for entry in data:
         for d in entry.get("defs", []) or []:
             # Format is "pos\tdefinition"
-            parts = d.split('\t', 1)
+            parts = d.split("\t", 1)
             if len(parts) == 2:
                 defs.append(parts[1].strip())
         if len(defs) >= 5:
             break
     return defs
 
+
 # --- Free Dictionary API -----------------------------------------------------
+
 
 def fetch_free_dictionary(word: str) -> List[str]:
     url = f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}"
@@ -126,7 +140,9 @@ def fetch_free_dictionary(word: str) -> List[str]:
                 break
     return definitions
 
+
 # --- Wordnik -----------------------------------------------------------------
+
 
 def fetch_wordnik(word: str) -> List[str]:
     api_key = os.getenv("WORDNIK_API_KEY")
@@ -147,7 +163,9 @@ def fetch_wordnik(word: str) -> List[str]:
             defs.append(text.strip())
     return defs
 
+
 # --- WordNet (NLTK) ----------------------------------------------------------
+
 
 def fetch_wordnet(word: str) -> List[str]:
     try:
@@ -166,6 +184,7 @@ def fetch_wordnet(word: str) -> List[str]:
         return []
     return definitions
 
+
 # --- Unified -----------------------------------------------------------------
 
 SOURCE_FUNCS = {
@@ -175,6 +194,7 @@ SOURCE_FUNCS = {
     "wordnik": fetch_wordnik,
     "wordnet": fetch_wordnet,
 }
+
 
 def fetch_definitions(word: str, sources: Optional[List[str]] = None) -> Dict[str, List[str]]:
     """Fetch definitions from multiple sources.
@@ -195,6 +215,7 @@ def fetch_definitions(word: str, sources: Optional[List[str]] = None) -> Dict[st
             log.warning(f"Source {name} failed: {e}")
             results[name] = []
     return results
+
 
 __all__ = [
     "fetch_wiktionary",
