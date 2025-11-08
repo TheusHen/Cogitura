@@ -3,18 +3,15 @@ Evaluator - Fase 3 do projeto
 Testa e avalia o modelo treinado
 """
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import librosa  # módulo disponível para patch nos testes
 import numpy as np
 import torch
-import torch.nn as nn
 
-from cogitura.config import Config
 from cogitura.logger import log
-from cogitura.utils import calculate_accuracy, calculate_wer
 
-from .database_manager import DatabaseManager  # exposto para patch em testes
+from .database_manager import DatabaseManager  # noqa: F401 - exposed for test patching
 from .trainer import Trainer  # exposto para patch em testes
 
 

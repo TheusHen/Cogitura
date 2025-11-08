@@ -3,7 +3,7 @@ All external HTTP calls are mocked to avoid network usage.
 """
 from unittest.mock import Mock, patch
 
-from src.cogitura.core.dictionary_sources import (
+from cogitura.core.dictionary_sources import (
     fetch_datamuse,
     fetch_definitions,
     fetch_free_dictionary,
@@ -14,7 +14,7 @@ from src.cogitura.core.dictionary_sources import (
 
 HTML_SAMPLE = """
 <html><body><ol><li>First definition of test.</li><li>Second definition with <b>markup</b>.</li></ol></body></html>
-"""
+"""  # noqa: E501
 
 
 @patch("src.cogitura.core.dictionary_sources.requests.get")

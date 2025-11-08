@@ -2,10 +2,9 @@
 Gerenciador de banco de dados ElasticSearch
 """
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple
 
 from elasticsearch import Elasticsearch, helpers
-from tqdm import tqdm
 
 from cogitura.config import Config
 from cogitura.logger import log
@@ -44,7 +43,8 @@ class DatabaseManager:
         try:
             if hasattr(self.es, "ping") and not self.es.ping():
                 log.warning(
-                    f"ElasticSearch não respondeu ao ping em {self.host}:{self.port} (ignorando em testes)"
+                    f"ElasticSearch não respondeu ao ping em "
+                    f"{self.host}:{self.port} (ignorando em testes)"
                 )
         except Exception:
             log.warning("Falha ao pingar ElasticSearch (ignorando em testes)")

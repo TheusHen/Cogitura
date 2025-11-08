@@ -5,7 +5,6 @@ from pathlib import Path
 
 import click
 from rich.console import Console
-from rich.progress import Progress
 from rich.table import Table
 
 from cogitura.config import Config
@@ -14,7 +13,6 @@ from cogitura.core.evaluator import ModelEvaluator
 from cogitura.core.sentence_generator import SentenceGenerator
 from cogitura.core.trainer import ModelTrainer
 from cogitura.core.tts_processor import TTSProcessor
-from cogitura.logger import log
 from cogitura.utils import split_sentence_into_words
 
 console = Console()
@@ -50,7 +48,7 @@ def generate(count, batch_size, save_db, generate_tts):
 
     # Estatísticas
     stats = generator.get_statistics()
-    console.print(f"\n[bold]Estatísticas:[/bold]")
+    console.print("\n[bold]Estatísticas:[/bold]")
     console.print(f"  Sentenças geradas: {stats['total_sentences']}")
     console.print(f"  Palavras únicas: {stats['unique_words']}")
     console.print(f"  Média de palavras por sentença: {stats['avg_words_per_sentence']:.2f}")
@@ -86,7 +84,9 @@ def generate(count, batch_size, save_db, generate_tts):
 
         tts_stats = tts.get_statistics()
         console.print(
-            f"[bold green]TTS gerado: {tts_stats['total_files']} arquivos, {tts_stats['total_size_mb']:.2f} MB[/bold green]"
+            "[bold green]TTS gerado: "
+            f"{tts_stats['total_files']} arquivos, "
+            f"{tts_stats['total_size_mb']:.2f} MB[/bold green]"
         )
 
 
@@ -98,7 +98,7 @@ def generate(count, batch_size, save_db, generate_tts):
 @click.option("--batch-size", "-b", default=None, type=int, help="Tamanho do lote")
 def train(model, epochs, batch_size):
     """Treina modelo de Speech-to-Text (Fase 2)"""
-    console.print(f"[bold green]Iniciando treinamento...[/bold green]")
+    console.print("[bold green]Iniciando treinamento...[/bold green]")
 
     # Busca dados do DB
     console.print("Carregando dados do ElasticSearch...")
@@ -128,7 +128,7 @@ def train(model, epochs, batch_size):
     trainer = ModelTrainer(model_name=model)
     train_loader, val_loader = trainer.prepare_data(audio_paths, texts)
 
-    history = trainer.train(train_loader, val_loader, epochs=epochs)
+    trainer.train(train_loader, val_loader, epochs=epochs)
 
     console.print("[bold green]Treinamento concluído![/bold green]")
 
@@ -138,7 +138,7 @@ def train(model, epochs, batch_size):
 @click.option("--sample-size", "-s", default=None, type=int, help="Tamanho da amostra de teste")
 def evaluate(model_path, sample_size):
     """Avalia modelo treinado (Fase 3)"""
-    console.print(f"[bold green]Avaliando modelo...[/bold green]")
+    console.print("[bold green]Avaliando modelo...[/bold green]")
 
     # Busca dados de teste
     console.print("Carregando dados do ElasticSearch...")

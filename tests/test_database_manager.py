@@ -1,11 +1,10 @@
 """
 Testes para módulo de gerenciamento de banco de dados
 """
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
-import pytest
 
-from src.cogitura.core.database_manager import DatabaseManager
+from cogitura.core.database_manager import DatabaseManager
 
 
 class TestDatabaseManager:

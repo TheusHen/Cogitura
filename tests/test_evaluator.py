@@ -1,11 +1,10 @@
 """
 Testes para módulo de avaliação
 """
-from unittest.mock import MagicMock, Mock, mock_open, patch
+from unittest.mock import Mock, mock_open, patch
 
-import pytest
 
-from src.cogitura.core.evaluator import Evaluator
+from cogitura.core.evaluator import Evaluator
 
 
 class TestEvaluator:

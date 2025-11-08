@@ -1,7 +1,6 @@
 """
 Testes básicos de importação
 """
-import pytest
 
 
 def test_import_config():

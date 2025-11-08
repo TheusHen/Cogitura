@@ -1,7 +1,6 @@
 """
 Testes para o módulo de configuração
 """
-import pytest
 
 from cogitura.config import Config
 

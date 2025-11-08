@@ -2,11 +2,10 @@
 Testes para módulo de treinamento
 """
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, mock_open, patch
+from unittest.mock import Mock, patch
 
-import pytest
 
-from src.cogitura.core.trainer import Trainer
+from cogitura.core.trainer import Trainer
 
 
 class TestTrainer:

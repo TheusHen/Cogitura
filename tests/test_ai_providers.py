@@ -1,11 +1,11 @@
 """
 Testes para módulo de providers de IA
 """
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
-from src.cogitura.providers.ai_providers import (
+from cogitura.providers.ai_providers import (
     AIProvider,
     AnthropicProvider,
     GeminiProvider,

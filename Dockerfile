@@ -42,6 +42,7 @@ COPY --from=builder /root/.local /root/.local
 # Copy application code
 COPY src/ ./src/
 COPY setup.py .
+COPY requirements.txt .
 COPY README.md .
 COPY LICENSE .
 

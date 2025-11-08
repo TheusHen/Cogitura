@@ -1,7 +1,6 @@
 """
 Testes para processador TTS
 """
-from pathlib import Path
 
 import pytest
 

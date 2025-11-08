@@ -4,7 +4,7 @@ Utilitários gerais para o projeto Cogitura
 import hashlib
 import json
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, List
 
 
 def hash_text(text: str) -> str:

@@ -43,7 +43,6 @@ class AIProvider(ABC):
         Returns:
             Sentença gerada
         """
-        pass
 
     @abstractmethod
     def generate_sentences(self, count: int, prompt: Optional[str] = None) -> List[str]:
@@ -57,7 +56,6 @@ class AIProvider(ABC):
         Returns:
             Lista de sentenças geradas
         """
-        pass
 
 
 class OpenAIProvider(AIProvider):
@@ -84,7 +82,7 @@ class OpenAIProvider(AIProvider):
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are a helpful assistant that generates simple English sentences.",
+                        "content": "You are a helpful assistant that generates simple English sentences."  # noqa: E501,
                     },
                     {"role": "user", "content": prompt},
                 ],
@@ -100,7 +98,7 @@ class OpenAIProvider(AIProvider):
 
     def generate_sentences(self, count: int, prompt: Optional[str] = None) -> List[str]:
         if prompt is None:
-            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"
+            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"  # noqa: E501
 
         try:
             response = self.client.chat.completions.create(
@@ -108,7 +106,7 @@ class OpenAIProvider(AIProvider):
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are a helpful assistant that generates simple English sentences.",
+                        "content": "You are a helpful assistant that generates simple English sentences.",  # noqa: E501
                     },
                     {"role": "user", "content": prompt},
                 ],
@@ -156,7 +154,7 @@ class AnthropicProvider(AIProvider):
 
     def generate_sentences(self, count: int, prompt: Optional[str] = None) -> List[str]:
         if prompt is None:
-            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"
+            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"  # noqa: E501
 
         try:
             response = self.client.messages.create(
@@ -199,7 +197,7 @@ class GoogleProvider(AIProvider):
 
     def generate_sentences(self, count: int, prompt: Optional[str] = None) -> List[str]:
         if prompt is None:
-            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"
+            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"  # noqa: E501
 
         try:
             response = self.model.generate_content(prompt)
@@ -239,7 +237,7 @@ class GeminiProvider(AIProvider):
 
     def generate_sentences(self, count: int, prompt: Optional[str] = None) -> List[str]:
         if prompt is None:
-            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"
+            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"  # noqa: E501
 
         try:
             response = self.model.generate_content(prompt)
@@ -279,7 +277,7 @@ class OllamaProvider(AIProvider):
 
     def generate_sentences(self, count: int, prompt: Optional[str] = None) -> List[str]:
         if prompt is None:
-            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"
+            prompt = f"Generate {count} different random English sentences with common words. Return only the sentences, one per line:"  # noqa: E501
 
         try:
             response = requests.post(

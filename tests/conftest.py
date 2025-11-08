@@ -2,7 +2,6 @@
 Configuração para testes pytest
 """
 import os
-from pathlib import Path
 
 import pytest
 
@@ -19,7 +18,6 @@ def setup_test_environment():
     yield
 
     # Cleanup após testes
-    pass
 
 
 @pytest.fixture

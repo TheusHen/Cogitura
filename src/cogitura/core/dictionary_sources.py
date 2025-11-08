@@ -21,7 +21,6 @@ import os
 import re
 import time
 from html import unescape
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import requests

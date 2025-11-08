@@ -2,7 +2,6 @@
 Sistema de logging configurável para o projeto Cogitura
 """
 import sys
-from pathlib import Path
 
 from loguru import logger
 
@@ -17,7 +16,12 @@ def setup_logger():
     # Adiciona handler para console
     logger.add(
         sys.stderr,
-        format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>",
+        format=(
+            "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | "
+            "<level>{level: <8}</level> | "
+            "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
+            "<level>{message}</level>"
+        ),
         level=Config.LOG_LEVEL,
         colorize=True,
     )

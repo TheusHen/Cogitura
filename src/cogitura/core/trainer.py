@@ -9,14 +9,13 @@ import librosa
 import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 
 try:
     # Import para permitir patch nos testes (mesmo se não usado diretamente)
     from .database_manager import DatabaseManager  # type: ignore
 except Exception:
     DatabaseManager = object  # fallback para patch
-from cogitura.config import Config
 from cogitura.logger import log
 
 
@@ -177,10 +176,13 @@ class Trainer:
                 val_loss = self.validate_epoch(model, val_loader, criterion)
                 history["val_loss"].append(val_loss)
                 log.info(
-                    f"Época {epoch+1}/{self.epochs} - Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}"
+                    f"Época {epoch + 1}/{self.epochs} - "
+                    f"Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}"
                 )
             else:
-                log.info(f"Época {epoch+1}/{self.epochs} - Train Loss: {train_loss:.4f}")
+                log.info(
+                    f"Época {epoch + 1}/{self.epochs} - Train Loss: {train_loss:.4f}"
+                )
 
         log.info("Treinamento concluído")
         return history

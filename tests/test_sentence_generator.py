@@ -1,11 +1,11 @@
 """
 Testes para módulo de geração de sentenças
 """
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
-from src.cogitura.core.sentence_generator import SentenceGenerator
+from cogitura.core.sentence_generator import SentenceGenerator
 
 
 class TestSentenceGenerator:
