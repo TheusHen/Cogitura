@@ -3,7 +3,6 @@ Testes para módulo de gerenciamento de banco de dados
 """
 from unittest.mock import Mock, patch
 
-
 from cogitura.core.database_manager import DatabaseManager
 
 

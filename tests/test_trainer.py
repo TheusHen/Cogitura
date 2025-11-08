@@ -4,7 +4,6 @@ Testes para módulo de treinamento
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-
 from cogitura.core.trainer import Trainer
 
 
