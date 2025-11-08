@@ -6,6 +6,40 @@ __pycache__/
 # C extensions
 *.so
 
+# Environment variables
+.env
+
+# Data files
+data/audio/*.mp3
+data/audio/*.wav
+data/datasets/*
+!data/audio/.gitkeep
+!data/datasets/.gitkeep
+
+# Logs
+logs/
+*.log
+
+# Models
+models/trained/*
+models/checkpoints/*
+!models/.gitkeep
+
+# ElasticSearch data (handled by Docker)
+elasticsearch-data/
+
+# Test results
+data/test_results/*
+!data/test_results/.gitkeep
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
 # Distribution / packaging
 .Python
 build/
