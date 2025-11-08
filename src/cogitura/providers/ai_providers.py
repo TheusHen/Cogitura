@@ -82,7 +82,7 @@ class OpenAIProvider(AIProvider):
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are a helpful assistant that generates simple English sentences."  # noqa: E501,
+                        "content": "You are a helpful assistant that generates simple English sentences.",  # noqa: E501,
                     },
                     {"role": "user", "content": prompt},
                 ],

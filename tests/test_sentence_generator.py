@@ -11,7 +11,7 @@ from cogitura.core.sentence_generator import SentenceGenerator
 class TestSentenceGenerator:
     """Testes para classe SentenceGenerator"""
 
-    @patch("src.cogitura.core.sentence_generator.get_provider")
+    @patch("cogitura.core.sentence_generator.get_provider")
     def test_initialization(self, mock_get_provider):
         """Testa inicialização do gerador de sentenças"""
         mock_provider = Mock()
@@ -24,7 +24,7 @@ class TestSentenceGenerator:
         assert generator.provider == mock_provider
         mock_get_provider.assert_called_once_with("openai", {"api_key": "test_key"})
 
-    @patch("src.cogitura.core.sentence_generator.get_provider")
+    @patch("cogitura.core.sentence_generator.get_provider")
     def test_generate_single_sentence(self, mock_get_provider):
         """Testa geração de uma única sentença"""
         mock_provider = Mock()
@@ -39,7 +39,7 @@ class TestSentenceGenerator:
         assert sentence == "This is a test sentence."
         mock_provider.generate_sentence.assert_called_once()
 
-    @patch("src.cogitura.core.sentence_generator.get_provider")
+    @patch("cogitura.core.sentence_generator.get_provider")
     def test_generate_multiple_sentences(self, mock_get_provider):
         """Testa geração de múltiplas sentenças"""
         mock_provider = Mock()
@@ -59,7 +59,7 @@ class TestSentenceGenerator:
         assert sentences == ["Sentence one.", "Sentence two.", "Sentence three."]
         assert mock_provider.generate_sentence.call_count == 3
 
-    @patch("src.cogitura.core.sentence_generator.get_provider")
+    @patch("cogitura.core.sentence_generator.get_provider")
     def test_extract_words_from_sentence(self, mock_get_provider):
         """Testa extração de palavras de uma sentença"""
         mock_provider = Mock()
@@ -74,7 +74,7 @@ class TestSentenceGenerator:
         expected = ["hello", "world", "this", "is", "a", "test"]
         assert words == expected
 
-    @patch("src.cogitura.core.sentence_generator.get_provider")
+    @patch("cogitura.core.sentence_generator.get_provider")
     def test_extract_words_handles_special_chars(self, mock_get_provider):
         """Testa extração de palavras com caracteres especiais"""
         mock_provider = Mock()
@@ -90,7 +90,7 @@ class TestSentenceGenerator:
         assert "beautiful" in words
         assert "day" in words
 
-    @patch("src.cogitura.core.sentence_generator.get_provider")
+    @patch("cogitura.core.sentence_generator.get_provider")
     def test_generate_with_retry_on_failure(self, mock_get_provider):
         """Testa retry quando geração falha"""
         mock_provider = Mock()
@@ -109,7 +109,7 @@ class TestSentenceGenerator:
         assert sentence == "Success sentence."
         assert mock_provider.generate_sentence.call_count == 2
 
-    @patch("src.cogitura.core.sentence_generator.get_provider")
+    @patch("cogitura.core.sentence_generator.get_provider")
     def test_generate_fails_after_max_retries(self, mock_get_provider):
         """Testa falha após máximo de tentativas"""
         mock_provider = Mock()

@@ -21,7 +21,7 @@ class TestTrainer:
         assert trainer.batch_size == 16
         assert trainer.epochs == 10
 
-    @patch("src.cogitura.core.trainer.DatabaseManager")
+    @patch("cogitura.core.trainer.DatabaseManager")
     def test_load_training_data(self, mock_db_manager):
         """Testa carregamento de dados de treinamento"""
         mock_db = Mock()
@@ -39,7 +39,7 @@ class TestTrainer:
         assert len(data) == 2
         assert data[0]["word"] == "hello"
 
-    @patch("src.cogitura.core.trainer.librosa")
+    @patch("cogitura.core.trainer.librosa")
     def test_prepare_audio_features(self, mock_librosa):
         """Testa preparação de features de áudio"""
         mock_librosa.load.return_value = ([0.1, 0.2, 0.3], 22050)
@@ -62,7 +62,7 @@ class TestTrainer:
 
         assert model is not None
 
-    @patch("src.cogitura.core.trainer.torch.save")
+    @patch("cogitura.core.trainer.torch.save")
     def test_save_model(self, mock_save):
         """Testa salvamento do modelo"""
         config = {"model_output_path": "/tmp/models"}
@@ -73,7 +73,7 @@ class TestTrainer:
 
         mock_save.assert_called_once()
 
-    @patch("src.cogitura.core.trainer.torch.load")
+    @patch("cogitura.core.trainer.torch.load")
     def test_load_model(self, mock_load):
         """Testa carregamento do modelo"""
         mock_model = Mock()
@@ -87,8 +87,8 @@ class TestTrainer:
         assert loaded_model == mock_model
         mock_load.assert_called_once()
 
-    @patch("src.cogitura.core.trainer.DatabaseManager")
-    @patch("src.cogitura.core.trainer.librosa")
+    @patch("cogitura.core.trainer.DatabaseManager")
+    @patch("cogitura.core.trainer.librosa")
     def test_train_epoch(self, mock_librosa, mock_db_manager):
         """Testa treinamento de uma época"""
         mock_librosa.load.return_value = ([0.1, 0.2], 22050)

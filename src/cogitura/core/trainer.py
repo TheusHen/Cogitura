@@ -180,9 +180,7 @@ class Trainer:
                     f"Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}"
                 )
             else:
-                log.info(
-                    f"Época {epoch + 1}/{self.epochs} - Train Loss: {train_loss:.4f}"
-                )
+                log.info(f"Época {epoch + 1}/{self.epochs} - Train Loss: {train_loss:.4f}")
 
         log.info("Treinamento concluído")
         return history

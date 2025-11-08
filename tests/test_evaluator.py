@@ -18,7 +18,7 @@ class TestEvaluator:
 
         assert evaluator.results_path.endswith("results")
 
-    @patch("src.cogitura.core.evaluator.Trainer")
+    @patch("cogitura.core.evaluator.Trainer")
     def test_load_model(self, mock_trainer_class):
         """Testa carregamento de modelo para avaliação"""
         mock_trainer = Mock()
@@ -71,7 +71,7 @@ class TestEvaluator:
         # 1 caractere faltando em 5 = 20%
         assert 0.15 <= cer <= 0.25
 
-    @patch("src.cogitura.core.evaluator.DatabaseManager")
+    @patch("cogitura.core.evaluator.DatabaseManager")
     def test_evaluate_on_dataset(self, mock_db_manager):
         """Testa avaliação em dataset completo"""
         mock_db = Mock()
@@ -129,7 +129,7 @@ class TestEvaluator:
         assert metrics["correct_predictions"] == 2
         assert metrics["total_predictions"] == 3
 
-    @patch("src.cogitura.core.evaluator.librosa")
+    @patch("cogitura.core.evaluator.librosa")
     def test_evaluate_audio_prediction(self, mock_librosa):
         """Testa avaliação de predição de áudio"""
         mock_librosa.load.return_value = ([0.1, 0.2], 22050)

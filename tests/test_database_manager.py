@@ -10,7 +10,7 @@ from cogitura.core.database_manager import DatabaseManager
 class TestDatabaseManager:
     """Testes para classe DatabaseManager"""
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_initialization(self, mock_es):
         """Testa inicialização do gerenciador de banco"""
         mock_client = Mock()
@@ -23,7 +23,7 @@ class TestDatabaseManager:
         assert db_manager.es == mock_client
         mock_es.assert_called_once()
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_create_indices(self, mock_es):
         """Testa criação de índices no Elasticsearch"""
         mock_client = Mock()
@@ -37,7 +37,7 @@ class TestDatabaseManager:
         # Deve criar índices de sentenças e palavras
         assert mock_client.indices.create.call_count >= 2
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_save_sentence(self, mock_es):
         """Testa salvamento de sentença"""
         mock_client = Mock()
@@ -52,7 +52,7 @@ class TestDatabaseManager:
         assert sentence_id == "test123"
         mock_client.index.assert_called_once()
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_sentence_exists(self, mock_es):
         """Testa verificação de existência de sentença"""
         mock_client = Mock()
@@ -69,7 +69,7 @@ class TestDatabaseManager:
         assert exists is True
         mock_client.search.assert_called_once()
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_sentence_not_exists(self, mock_es):
         """Testa verificação quando sentença não existe"""
         mock_client = Mock()
@@ -83,7 +83,7 @@ class TestDatabaseManager:
 
         assert exists is False
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_save_word_with_audio(self, mock_es):
         """Testa salvamento de palavra com áudio"""
         mock_client = Mock()
@@ -98,7 +98,7 @@ class TestDatabaseManager:
         assert word_id == "word123"
         mock_client.index.assert_called_once()
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_word_exists(self, mock_es):
         """Testa verificação de existência de palavra"""
         mock_client = Mock()
@@ -118,7 +118,7 @@ class TestDatabaseManager:
         assert exists is True
         assert audio_path == "/path/to/word.mp3"
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_word_not_exists(self, mock_es):
         """Testa verificação quando palavra não existe"""
         mock_client = Mock()
@@ -133,7 +133,7 @@ class TestDatabaseManager:
         assert exists is False
         assert audio_path is None
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_get_all_sentences(self, mock_es):
         """Testa recuperação de todas as sentenças"""
         mock_client = Mock()
@@ -156,7 +156,7 @@ class TestDatabaseManager:
         assert len(sentences) == 3
         assert sentences[0] == "Sentence 1"
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_get_all_words(self, mock_es):
         """Testa recuperação de todas as palavras"""
         mock_client = Mock()
@@ -178,7 +178,7 @@ class TestDatabaseManager:
         assert len(words) == 2
         assert words[0]["word"] == "hello"
 
-    @patch("src.cogitura.core.database_manager.Elasticsearch")
+    @patch("cogitura.core.database_manager.Elasticsearch")
     def test_get_statistics(self, mock_es):
         """Testa obtenção de estatísticas do banco"""
         mock_client = Mock()

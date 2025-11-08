@@ -17,7 +17,7 @@ HTML_SAMPLE = """
 """  # noqa: E501
 
 
-@patch("src.cogitura.core.dictionary_sources.requests.get")
+@patch("cogitura.core.dictionary_sources.requests.get")
 def test_fetch_wiktionary(mock_get):
     mock_resp = Mock(status_code=200, text=HTML_SAMPLE)
     mock_resp.raise_for_status.return_value = None
@@ -27,7 +27,7 @@ def test_fetch_wiktionary(mock_get):
     assert any("definition" in d.lower() for d in defs)
 
 
-@patch("src.cogitura.core.dictionary_sources.requests.get")
+@patch("cogitura.core.dictionary_sources.requests.get")
 def test_fetch_datamuse(mock_get):
     mock_resp = Mock(status_code=200)
     mock_resp.raise_for_status.return_value = None
@@ -37,7 +37,7 @@ def test_fetch_datamuse(mock_get):
     assert defs == ["A procedure."]
 
 
-@patch("src.cogitura.core.dictionary_sources.requests.get")
+@patch("cogitura.core.dictionary_sources.requests.get")
 def test_fetch_free_dictionary(mock_get):
     mock_resp = Mock(status_code=200)
     mock_resp.raise_for_status.return_value = None
@@ -54,14 +54,14 @@ def test_fetch_free_dictionary(mock_get):
     assert defs == ["An examination."]
 
 
-@patch("src.cogitura.core.dictionary_sources.requests.get")
+@patch("cogitura.core.dictionary_sources.requests.get")
 def test_fetch_wordnik_no_key(mock_get, monkeypatch):
     monkeypatch.delenv("WORDNIK_API_KEY", raising=False)
     defs = fetch_wordnik("test")
     assert defs == []  # no key returns empty list
 
 
-@patch("src.cogitura.core.dictionary_sources.requests.get")
+@patch("cogitura.core.dictionary_sources.requests.get")
 def test_fetch_wordnik_with_key(mock_get, monkeypatch):
     monkeypatch.setenv("WORDNIK_API_KEY", "dummy")
     mock_resp = Mock(status_code=200)
@@ -78,7 +78,7 @@ def test_fetch_wordnet_optional():
     assert isinstance(defs, list)
 
 
-@patch("src.cogitura.core.dictionary_sources.requests.get")
+@patch("cogitura.core.dictionary_sources.requests.get")
 def test_fetch_definitions(mock_get):
     mock_resp = Mock(status_code=200)
     mock_resp.raise_for_status.return_value = None
